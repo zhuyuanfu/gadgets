@@ -41,6 +41,13 @@ public class Dormitory {
         return studentList.contains(s);
     }
     
+    public boolean atLeast1StudentTested() {
+        for (Student s: studentList) {
+            if (s.isNukeAcidTested()) return true;
+        }
+        return false;
+    }
+    
     @Override
     public boolean equals(Object other) {
         if (other instanceof Dormitory) {

@@ -8,6 +8,8 @@ public class Student {
 	private int bedNumber;
 	private String phoneNumber;
 	
+	private boolean nukeAcidTested = false;
+	
 	public Student() {	}
 	
 	public Student(String name, String identityNumber, String studentNumber) {
@@ -51,6 +53,16 @@ public class Student {
         this.phoneNumber = phoneNumber;
     }
 
+    
+    
+    public boolean isNukeAcidTested() {
+        return nukeAcidTested;
+    }
+
+    public void setNukeAcidTested(boolean nukeAcidTested) {
+        this.nukeAcidTested = nukeAcidTested;
+    }
+
     @Override
 	public boolean equals(Object other) {
 		if (! (other instanceof Student)) {
@@ -61,8 +73,8 @@ public class Student {
 		if (otherStudent.getStudentNumber().equalsIgnoreCase(this.studentNumber)) {
 			result = true;
 		} else {
-			if (!isBlank(this.studentNumber) && !isBlank(otherStudent.getStudentNumber())) {
-				result = this.studentNumber.equals(otherStudent.getStudentNumber());
+			if (!isBlank(this.identityNumber) && !isBlank(otherStudent.getIdentityNumber())) {
+				result = this.identityNumber.equals(otherStudent.getIdentityNumber());
 			}
 		}
 		
