@@ -12,14 +12,14 @@ import java.net.URLEncoder;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.tomcat.jni.FileInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import cn.edu.njfu.zyf.model.Student;
+import cn.edu.njfu.zyf.notification.TextMessageSender;
 import cn.edu.njfu.zyf.service.GadgetService;
 import io.swagger.annotations.ApiOperation;
 
@@ -29,34 +29,26 @@ public class GadgetController {
 	@Autowired
 	private GadgetService gadgetService;
 	
+	@Autowired
+	private TextMessageSender sender;
+	
 	@ApiOperation(value = "说声hi")
 	@RequestMapping(value = "/hello", method = RequestMethod.GET)
 	public String hello() {
 		return gadgetService.hello();
 	}
 	
-	@ApiOperation(value = "上传两个excel文件，指定姓名、身份证、学号列的位置，下载谁没做核酸的信息")
-	@RequestMapping(value = "/untested/students", method = RequestMethod.GET)
-	public String findUntestedStudents(HttpServletResponse response) throws IOException {
+	@ApiOperation(value = "给手机发一条短信")
+	@RequestMapping(value = "/text/mobile", method = RequestMethod.GET)
+	public String sendText(String text, String mobile) throws IOException {
 		
-		File file = new File("C:\\Users\\Administrator\\Desktop\\排查没做核酸的学生workspace\\20221004\\未做核酸的学生（日期：20221004）.xlsx");
-		InputStream is = new FileInputStream(file);
-		byte[] buffer = new byte[is.available()];
-		is.read(buffer);
-		is.close();
+	    Student targetPerson = new Student();
+	    targetPerson.setPhoneNumber(mobile);
+	    targetPerson.setStudentNumber("2022097");
 		
-		response.reset();
-		response.setCharacterEncoding("UTF-8");
-        response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("未做核酸的学生（日期：20221004）.xlsx"));
-		response.setContentType("multipart/form-data");
-		
-		OutputStream os = new BufferedOutputStream(response.getOutputStream());
-		os.write(buffer);
-		os.flush();
-		os.close();
-		
+	    sender.sendMessage(text, targetPerson);
+	    
 		return "hi";
-//		return gadgetService.findUntestedStudents(testedPeopleFile, testedNameColIndex, testedIdentityColIndex, allStudentsFile, allNameColIndex, allIdentityColIndex, allStudentNumberIndex);
 	}
 	
 	

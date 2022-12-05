@@ -165,12 +165,12 @@ public class GadgetServiceImpl implements GadgetService{
             nukeAcidTestedStudents.add(student);
         }
         
-        System.out.println(nukeAcidTestedStudents.get(3));
-        System.out.println(nukeAcidTestedStudents.get(33));
-        System.out.println(nukeAcidTestedStudents.get(333));
-        System.out.println(nukeAcidTestedStudents.get(34));
-        System.out.println(nukeAcidTestedStudents.get(344));
-        System.out.println(nukeAcidTestedStudents.get(3444));
+//        System.out.println(nukeAcidTestedStudents.get(3));
+//        System.out.println(nukeAcidTestedStudents.get(33));
+//        System.out.println(nukeAcidTestedStudents.get(333));
+//        System.out.println(nukeAcidTestedStudents.get(34));
+//        System.out.println(nukeAcidTestedStudents.get(344));
+//        System.out.println(nukeAcidTestedStudents.get(3444));
         
         // 将所有住宿生和当天做了核酸的学生对比一下
         for (Student s : studentList) {
@@ -208,6 +208,7 @@ public class GadgetServiceImpl implements GadgetService{
         row.createCell(6).setCellValue("学生做了核酸");
         row.createCell(7).setCellValue("宿舍做了核酸（只要有一个学生做了核酸即可认为整个宿舍做了核酸）");
         
+        // 制作一个蓝色背景色，用于乖学生
         byte paletteIndex = 0x8;
         HSSFCellStyle cellStyle1 = wb.createCellStyle();
         HSSFFont font = wb.createFont();
@@ -249,13 +250,13 @@ public class GadgetServiceImpl implements GadgetService{
                 cell7.setCellValue(atLeast1StudentTested);
                 
                 if (atLeast1StudentTested) {
-                    cell0.setCellStyle(cellStyle1);
-                    cell1.setCellStyle(cellStyle1);
-                    cell2.setCellStyle(cellStyle1);
-                    cell3.setCellStyle(cellStyle1);
-                    cell4.setCellStyle(cellStyle1);
-                    cell5.setCellStyle(cellStyle1);
-                    cell6.setCellStyle(cellStyle1);
+//                    cell0.setCellStyle(cellStyle1);
+//                    cell1.setCellStyle(cellStyle1);
+//                    cell2.setCellStyle(cellStyle1);
+//                    cell3.setCellStyle(cellStyle1);
+//                    cell4.setCellStyle(cellStyle1);
+//                    cell5.setCellStyle(cellStyle1);
+//                    cell6.setCellStyle(cellStyle1);
                     cell7.setCellStyle(cellStyle1);
                 }
                 
