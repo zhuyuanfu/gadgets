@@ -33,7 +33,6 @@ public class TextMessageSender {
     // 懒了
     private String appId = "05c4c92ebf232547";
     private String accessToken = "1792a85e3cef2b666d50d493efc2dc0b";
-    
     private String schoolCode = "njlydx";
     
     public void sendMessage(String text, Student student) {

@@ -22,16 +22,21 @@ import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.NumberToTextConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.njfu.zyf.model.Dormitory;
 import cn.edu.njfu.zyf.model.Student;
+import cn.edu.njfu.zyf.notification.TextMessageSender;
 import cn.edu.njfu.zyf.service.GadgetService;
 
 @Service
 public class GadgetServiceImpl implements GadgetService{
 
+    @Autowired
+    private TextMessageSender messageSender;
+    
     private static Set<String> nukeAcidDoors = new HashSet<String>();
     
     private static Set<String> studentTypes = new HashSet<String>();
