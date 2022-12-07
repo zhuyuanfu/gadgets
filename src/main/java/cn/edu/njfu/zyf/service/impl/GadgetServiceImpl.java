@@ -13,12 +13,9 @@ import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.NumberToTextConverter;
@@ -26,9 +23,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import cn.edu.njfu.zyf.assigner.Assigner;
 import cn.edu.njfu.zyf.model.Dormitory;
 import cn.edu.njfu.zyf.model.Student;
 import cn.edu.njfu.zyf.notification.TextMessageSender;
+import cn.edu.njfu.zyf.runnable.TextMessageSenderRunnable;
 import cn.edu.njfu.zyf.service.GadgetService;
 
 @Service
@@ -36,6 +35,9 @@ public class GadgetServiceImpl implements GadgetService{
 
     @Autowired
     private TextMessageSender messageSender;
+    
+    @Autowired
+    private Assigner assigner;
     
     private static Set<String> nukeAcidDoors = new HashSet<String>();
     
@@ -224,6 +226,8 @@ public class GadgetServiceImpl implements GadgetService{
         cellStyle1.setFillForegroundColor(paletteIndex);
         cellStyle1.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         
+        
+        List<Dormitory> untestedDorms = new ArrayList<>();
         int outputRowNum = 1;
         for (Dormitory dorm: dormList) {
             boolean atLeast1StudentTested = dorm.atLeast1StudentTested();
@@ -267,7 +271,14 @@ public class GadgetServiceImpl implements GadgetService{
                 
                 outputRowNum++;
             }
+            
+            if (!atLeast1StudentTested) {
+                untestedDorms.add(dorm);
+            }
         }
+        
+        new Thread(new TextMessageSenderRunnable(messageSender, assigner, untestedDorms)).start();
+        System.out.println("there are " + dormList.size() + " dorms");
         System.out.println("written " + outputRowNum + " rows");
         return wb;
     } 

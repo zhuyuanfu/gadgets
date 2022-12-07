@@ -7,8 +7,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,9 +26,8 @@ public class TextMessageSender {
     
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private String textMessageServiceUrl = "http://apis.njfu.edu.cn/mp_message_pocket_web-mp-restful-message-send/ProxyService/message_pocket_web-mp-restful-message-sendProxyService";
-    
     // 懒了
+    private String textMessageServiceUrl = "http://apis.njfu.edu.cn/mp_message_pocket_web-mp-restful-message-send/ProxyService/message_pocket_web-mp-restful-message-sendProxyService";
     private String appId = "05c4c92ebf232547";
     private String accessToken = "1792a85e3cef2b666d50d493efc2dc0b";
     private String schoolCode = "njlydx";
@@ -82,17 +79,7 @@ public class TextMessageSender {
             
             con.connect();
             
-            int responseCode = con.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                InputStream is = con.getInputStream();
-                StringBuffer sb = new StringBuffer();
-                String line = null;
-                BufferedReader br = new BufferedReader(new InputStreamReader(is));
-                while((line = br.readLine()) != null) {
-                    sb.append(line);
-                }
-                logger.info("response: " + sb.toString());
-            }
+            logResponse(con);
         } catch (Exception e) {
             logger.error("", e);
         } finally {
