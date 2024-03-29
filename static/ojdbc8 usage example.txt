@@ -1,0 +1,1 @@
+C:\Users\Administrator\Downloads>mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc14 -Dversion=11.2.0 -Dpackaging=jar -Dfile=ojdbc8.jar
