@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.Workbook;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
@@ -31,6 +32,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 public class GeneralAttenderController {
 
+	private static org.slf4j.Logger logger = LoggerFactory.getLogger(GeneralAttenderController.class);
 	@Autowired
 	private GeneralAttenderService service;	
 	
@@ -65,7 +67,7 @@ public class GeneralAttenderController {
 			return -1;
 		}
         int checkins = service.getSignedCount(conferenceID);
-        System.out.println(req.getLocalAddr() + "会议" + conferenceID + "已签到人数：" + checkins);
+        logger.info(req.getLocalAddr() + "会议" + conferenceID + "已签到人数：" + checkins);
         return checkins;
     }
     

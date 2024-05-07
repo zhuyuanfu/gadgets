@@ -50,23 +50,4 @@ public class GadgetController {
 	    
 		return "hi";
 	}
-	
-	
-	@ApiOperation(value = "上传两个excel文件，一个文件是学生-宿舍关系，另一个文件是刷卡记录。下载谁没做核酸的信息")
-	@RequestMapping(value = "/untested/dorm", method = RequestMethod.POST)
-	public String findUntestedDorm(
-	        MultipartFile dorms, 
-	        MultipartFile testedStudents,
-	        HttpServletResponse response) throws IOException {
-	    Workbook wb = gadgetService.findUntestedDorm(dorms, testedStudents);
-	    
-	    response.setCharacterEncoding("UTF-8");
-        response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("untested-dorm.xls"));
-        response.setContentType("multipart/form-data");
-	    OutputStream os = response.getOutputStream();
-	    wb.write(os);
-	    os.flush();
-	    os.close();
-	    return "hi";
-	}
 }
