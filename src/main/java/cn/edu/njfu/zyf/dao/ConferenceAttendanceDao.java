@@ -6,5 +6,6 @@ import cn.edu.njfu.zyf.model.ConferenceAttender;
 
 public interface ConferenceAttendanceDao {
     List<ConferenceAttender> listAttenders();
+    
 
 }

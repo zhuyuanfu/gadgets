@@ -53,7 +53,7 @@ public class ConferenceAttendanceController {
         return getIndexPage(conferenceName);
     }
     
-    @ApiOperation(value = "查询未签到人数")
+    @ApiOperation(value = "查询签到人数")
     @RequestMapping(value = "/numOfCheckins", method = RequestMethod.GET)
     public int getUncheckedNum(HttpServletRequest req, String conferenceName) {
         int checkins = cas.getCheckIns(conferenceName);
