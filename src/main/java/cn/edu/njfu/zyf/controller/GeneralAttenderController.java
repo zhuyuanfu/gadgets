@@ -38,7 +38,7 @@ public class GeneralAttenderController {
 	
 	private volatile static String indexTemplate = null;
 	
-    private final Path imageStoragePath = Paths.get(".\\static\\");
+    private final Path imageStoragePath = Paths.get(".\\src\\main\\resources\\static\\");
 
     @ApiOperation(value = "展示通用签到二维码")
     @RequestMapping(value = "/generalQRCode", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
