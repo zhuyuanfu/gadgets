@@ -29,7 +29,7 @@ public class GeneralAttenderServiceImpl implements GeneralAttenderService {
 		List<GeneralAttender> generalAttenderList = dao.listGeneralAttendersByConferenceID(conferenceID);
 		int signedCount = 0;
 		for(GeneralAttender ga: generalAttenderList) {
-			if (ga.getHasSignedIn().equals("是")) {
+			if ("是".equals(ga.getHasSignedIn())) {
 				signedCount++;
 			}
 		}

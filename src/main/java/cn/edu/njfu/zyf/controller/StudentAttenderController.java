@@ -25,26 +25,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.edu.njfu.zyf.service.GeneralAttenderService;
+import cn.edu.njfu.zyf.service.StudentAttenderService;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-public class GeneralAttenderController {
+public class StudentAttenderController {
 
 	private static org.slf4j.Logger logger = LoggerFactory.getLogger(GeneralAttenderController.class);
 	@Autowired
-	private GeneralAttenderService service;	
+	private StudentAttenderService service;	
 	
 	private volatile static String indexTemplate = null;
 	
     private final Path imageStoragePath = Paths.get(".\\src\\main\\resources\\static\\");
 
-    @ApiOperation(value = "展示通用签到二维码")
-    @RequestMapping(value = "/generalQRCode", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<Resource> qrImage(HttpServletResponse res) {
+    @ApiOperation(value = "展示签到二维码")
+    @RequestMapping(value = "/qrCode", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<Resource> qrImage(HttpServletResponse res, String picName) {
     	try {
     		res.setContentType("image/apng");
-            Path file = imageStoragePath.resolve("GeneralConferenceCheckinQRCode.png");
+            Path file = imageStoragePath.resolve(picName + ".png");
             Resource resource = new UrlResource(file.toUri());
  
             if (resource.exists() || resource.isReadable()) {
@@ -59,8 +59,9 @@ public class GeneralAttenderController {
     	
     }
     
+
     @ApiOperation(value = "查询签到人数")
-    @RequestMapping(value = "/generalNumOfSignIns", method = RequestMethod.GET)
+    @RequestMapping(value = "/studentNumOfSignIns", method = RequestMethod.GET)
     public int getCheckedNum(HttpServletRequest req, String conferenceID) {
     	if(conferenceID == null || conferenceID.equals("")) {
 			return -1;
@@ -71,7 +72,7 @@ public class GeneralAttenderController {
     }
     
     @ApiOperation(value = "展示大屏页面")
-    @RequestMapping(value = "/generalIndex", method = RequestMethod.GET)
+    @RequestMapping(value = "/studentIndex", method = RequestMethod.GET)
     public String getIndex(String conferenceID) {
     	if(conferenceID == null || conferenceID.equals("")) {
 			return "must include conferenceID in your url";
@@ -80,7 +81,7 @@ public class GeneralAttenderController {
     }
     
 	@ApiOperation(value = "下载该会议人员签到情况")
-	@RequestMapping(value = "/download", method = RequestMethod.GET)
+	@RequestMapping(value = "/downloadStudentAttenders", method = RequestMethod.GET)
 	public String findUntestedDorm(HttpServletRequest request, HttpServletResponse response, String conferenceID) throws IOException {
 		if(conferenceID == null || conferenceID.equals("")) {
 			return "must include conferenceID in your url";
@@ -95,7 +96,7 @@ public class GeneralAttenderController {
         }
 	    
 	    response.setCharacterEncoding("UTF-8");
-        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xls");
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
         response.setContentType("multipart/form-data");
 	    OutputStream os = response.getOutputStream();
 	    wb.write(os);
@@ -103,17 +104,18 @@ public class GeneralAttenderController {
 	    os.close();
 	    return "hi";
 	}
-    
-
+	
     private String getIndexPage2(String conferenceID) {
-    	return getIndexPageFromResource().replace("{conferenceID}", conferenceID);
+    	return getIndexPageFromResource()
+    			.replace("{conferenceID}", conferenceID)
+    			.replace("{picName}", "StudentAttenderQRCode");
     }
-    
+
     private static String getIndexPageFromResource() {
     	if (indexTemplate != null) return indexTemplate;
     	
     	ResourceLoader resourceLoader = new DefaultResourceLoader();
-    	Resource resource = resourceLoader.getResource("classpath:static/indexTemplate.html");
+    	Resource resource = resourceLoader.getResource("classpath:static/studentTemplate.html");
     	InputStream is = null;
     	InputStreamReader isr = null;
     	BufferedReader br = null;
@@ -142,5 +144,7 @@ public class GeneralAttenderController {
     	}
     	return indexTemplate;
     }
+    
+    
     
 }

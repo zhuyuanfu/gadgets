@@ -50,12 +50,6 @@ public class GeneralConferenceAttenderDaoHttpImpl implements GeneralConferenceAt
 	}
 	
 	@Override
-	public List<GeneralAttender> listGeneralAttenders() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public List<GeneralAttender> listGeneralAttendersByConferenceID(String conferenceID) {
 		Long now = System.currentTimeMillis();
 		if (conferenceQueryTimestampMap.containsKey(conferenceID) && conferenceQueryResultMap.containsKey(conferenceID)) {
