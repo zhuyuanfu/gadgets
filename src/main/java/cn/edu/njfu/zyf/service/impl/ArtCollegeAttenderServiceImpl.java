@@ -14,11 +14,11 @@ import cn.edu.njfu.zyf.dao.GeneralConferenceAttenderDao;
 import cn.edu.njfu.zyf.model.GeneralAttender;
 import cn.edu.njfu.zyf.service.GeneralAttenderService;
 
-@Service(value = "generalAttenderServiceImpl")
-public class GeneralAttenderServiceImpl implements GeneralAttenderService {
+@Service(value = "artCollegeAttenderServiceImpl")
+public class ArtCollegeAttenderServiceImpl implements GeneralAttenderService {
 
 	@Autowired
-	@Qualifier(value = "generalConferenceAttenderDao")
+	@Qualifier(value = "artCollegeConferenceAttenderDao")
 	private GeneralConferenceAttenderDao dao;
 	
 	@Override
@@ -29,13 +29,7 @@ public class GeneralAttenderServiceImpl implements GeneralAttenderService {
 	@Override
 	public int getSignedCount(String conferenceID) {
 		List<GeneralAttender> generalAttenderList = dao.listGeneralAttendersByConferenceID(conferenceID);
-		int signedCount = 0;
-		for(GeneralAttender ga: generalAttenderList) {
-			if ("是".equals(ga.getHasSignedIn())) {
-				signedCount++;
-			}
-		}
-		return signedCount;
+		return generalAttenderList.size();
 	}
 
 	@Override
@@ -53,9 +47,6 @@ public class GeneralAttenderServiceImpl implements GeneralAttenderService {
 		row0.createCell(0).setCellValue("会议名");
 		row0.createCell(1).setCellValue("不变号");
 		row0.createCell(2).setCellValue("姓名");
-		row0.createCell(3).setCellValue("部门");
-		row0.createCell(4).setCellValue("备注");
-		row0.createCell(5).setCellValue("是否已签到");
 		
 		for(int i = 0; i < generalAttenderList.size(); i++) {
 			GeneralAttender ga = generalAttenderList.get(i);
@@ -63,9 +54,6 @@ public class GeneralAttenderServiceImpl implements GeneralAttenderService {
 			dataRow.createCell(0).setCellValue(ga.getConferenceID());;
 			dataRow.createCell(1).setCellValue(ga.getUnchangeableCode());;
 			dataRow.createCell(2).setCellValue(ga.getName());;
-			dataRow.createCell(3).setCellValue(ga.getDepartment());;
-			dataRow.createCell(4).setCellValue(ga.getComment());;
-			dataRow.createCell(5).setCellValue(ga.getHasSignedIn());;
 		}
 		
 		return wb;

@@ -24,8 +24,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cn.edu.njfu.zyf.dao.GeneralConferenceAttenderDao;
 import cn.edu.njfu.zyf.model.GeneralAttender;
 
-@Repository(value = "generalConferenceAttenderDao")
-public class GeneralConferenceAttenderDaoHttpImpl implements GeneralConferenceAttenderDao{
+@Repository(value = "artCollegeConferenceAttenderDao")
+public class ArtCollegeConferenceAttenderDaoHttpImpl implements GeneralConferenceAttenderDao{
 
 	// 缓存5秒内签到人数据，防止别人开许多个窗口，导致刷新太快
 	private static final Long localCacheExpiryMilliseconds = 5000L; 
@@ -34,18 +34,15 @@ public class GeneralConferenceAttenderDaoHttpImpl implements GeneralConferenceAt
 	// 记录了上一次查询结果
 	private volatile Map<String, List<GeneralAttender>> conferenceQueryResultMap = new HashMap<>(); 
 	
-	private final String shareKey = "cbed0acd4bcd43faa7104358f4d575d0";
-	private final String requestURL = "https://apaas.njfu.edu.cn/api/public/query/cbed0acd4bcd43faa7104358f4d575d0/data";
+	private final String shareKey = "125e70bfd19c4d1fb7a72af7c0959504";
+	private final String requestURL = "https://apaas.njfu.edu.cn/api/public/query/125e70bfd19c4d1fb7a72af7c0959504/data";
 	
 	private static Map<String, String> fieldCodeToFieldNameMap = new HashMap<>();
 	
 	static {
-		fieldCodeToFieldNameMap.put("input_1713436053766", "comment");
-		fieldCodeToFieldNameMap.put("select_1713434732376", "conferenceID");
-		fieldCodeToFieldNameMap.put("input_1713436028287", "department");
-		fieldCodeToFieldNameMap.put("input_1713435952863", "unchangeableCode");
-		fieldCodeToFieldNameMap.put("radio_1713451244024", "hasSignedIn");
-		fieldCodeToFieldNameMap.put("input_1713435978437", "name");
+		fieldCodeToFieldNameMap.put("select_1718070672408", "conferenceID");
+		fieldCodeToFieldNameMap.put("input_1716523965124", "unchangeableCode");
+		fieldCodeToFieldNameMap.put("input_1716524085527", "name");
 	}
 	
 	@Override
@@ -98,9 +95,6 @@ public class GeneralConferenceAttenderDaoHttpImpl implements GeneralConferenceAt
 	    		ga.setConferenceID(conferenceID);
 	    		ga.setUnchangeableCode(datum.get("unchangeableCode"));
 	    		ga.setName(datum.get("name"));
-	    		ga.setComment(datum.get("comment"));
-	    		ga.setDepartment(datum.get("department"));
-	    		ga.setHasSignedIn(datum.get("hasSignedIn"));
 	    		result.add(ga);
 	    	}
 	    	conferenceQueryTimestampMap.put(conferenceID, now);
@@ -130,7 +124,7 @@ public class GeneralConferenceAttenderDaoHttpImpl implements GeneralConferenceAt
 	}
 	
 	private String makePayload(String conferenceID) {
-		String payload = "{\"query\":\"{\\\"query\\\":{\\\"bool\\\":{\\\"must\\\":[{\\\"terms\\\":{\\\"select_1713434732376\\\":[\\\"{0}\\\"]}}],\\\"must_not\\\":[]}},\\\"_source\\\":[\\\"singlemember_1713435076343\\\",\\\"date_1713450008324\\\",\\\"select_1713434732376\\\",\\\"input_1713435952863\\\",\\\"input_1713435978437\\\",\\\"input_1713436028287\\\",\\\"input_1713436053766\\\",\\\"radio_1713451244024\\\",\\\"divider_1713450807261\\\",\\\"singlemember_1713450315127\\\",\\\"creator\\\",\\\"createTime\\\",\\\"updateTime\\\"],\\\"from\\\":0,\\\"size\\\":99999,\\\"sort\\\":[{\\\"createTime\\\":{\\\"order\\\":\\\"desc\\\"}}]}\",\"password\":null,\"appId\":\"99\",\"formId\":\"639\",\"formCode\":\"bbed0acd4bcd43faa7104358f4d575d0\",\"filterFields\":[\"select_1713434732376\"],\"queryFields\":[\"singlemember_1713435076343\",\"date_1713450008324\",\"select_1713434732376\",\"input_1713435952863\",\"input_1713435978437\",\"input_1713436028287\",\"input_1713436053766\",\"radio_1713451244024\",\"divider_1713450807261\",\"singlemember_1713450315127\",\"creator\",\"createTime\",\"updateTime\"]}";
-		return payload.replace("{0}", conferenceID);
+		String result = "{\"query\":\"{\\\"query\\\":{\\\"bool\\\":{\\\"must\\\":[{\\\"terms\\\":{\\\"select_1718070672408\\\":[\\\"{0}\\\"]}}],\\\"must_not\\\":[]}},\\\"_source\\\":[\\\"singlemember_1716524263135\\\",\\\"date_1718070440816\\\",\\\"format_number_1718070747506\\\",\\\"select_1718070672408\\\",\\\"input_1716523965124\\\",\\\"input_1716524085527\\\",\\\"coordinates_1735877356713\\\",\\\"input_1732153593976\\\",\\\"creator\\\",\\\"createTime\\\",\\\"updateTime\\\"],\\\"from\\\":0,\\\"size\\\":999999,\\\"sort\\\":[{\\\"createTime\\\":{\\\"order\\\":\\\"desc\\\"}}]}\",\"password\":null,\"appId\":\"182\",\"formId\":\"1244\",\"formCode\":\"025e70bfd19c4d1fb7a72af7c0959504\",\"filterFields\":[\"select_1718070672408\"],\"queryFields\":[\"singlemember_1716524263135\",\"date_1718070440816\",\"format_number_1718070747506\",\"select_1718070672408\",\"input_1716523965124\",\"input_1716524085527\",\"coordinates_1735877356713\",\"input_1732153593976\",\"creator\",\"createTime\",\"updateTime\"]}";
+		return result.replace("{0}", conferenceID);
 	}
 }

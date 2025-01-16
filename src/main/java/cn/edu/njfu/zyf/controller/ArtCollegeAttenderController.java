@@ -19,31 +19,28 @@ import cn.edu.njfu.zyf.service.GeneralAttenderService;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-public class GeneralAttenderController {
+public class ArtCollegeAttenderController {
 
-	private static org.slf4j.Logger logger = LoggerFactory.getLogger(GeneralAttenderController.class);
+	private static org.slf4j.Logger logger = LoggerFactory.getLogger(ArtCollegeAttenderController.class);
 	@Autowired
-	@Qualifier(value = "generalAttenderServiceImpl")
+	@Qualifier(value = "artCollegeAttenderServiceImpl")
 	private GeneralAttenderService service;	
-	
-	
-    
-    @ApiOperation(value = "查询签到人数")
-    @RequestMapping(value = Constants.GENERAL_NUM_OF_SIGIN_IN, method = RequestMethod.GET)
+		    
+    @ApiOperation(value = "查询艺术院签到人数")
+    @RequestMapping(value = Constants.ART_COLLEGE_NUM_OF_SIGN_IN, method = RequestMethod.GET)
     public int getCheckedNum(HttpServletRequest req, String conferenceID) {
     	if(conferenceID == null || conferenceID.equals("")) {
 			return -1;
 		}
         int checkins = service.getSignedCount(conferenceID);
-        logger.info("通用会议签到应用有人正在用大屏。会议：" + conferenceID + "已签到人数：" + checkins);
-        logger.info("local addr: " + req.getLocalAddr() );
-        logger.info("remote addr: " + req.getRemoteAddr() + " port: " + req.getRemotePort());
+        logger.info( "艺术院有人正在用大屏。会议:" + conferenceID + "，已签到人数：" + checkins);
+        logger.info("local addr:  " + req.getLocalAddr());
+        logger.info("remote addr: " + req.getRemoteAddr());
         return checkins;
     }
     
-
 	@ApiOperation(value = "下载该会议人员签到情况")
-	@RequestMapping(value = Constants.GENERAL_DOWNLOAD, method = RequestMethod.GET)
+	@RequestMapping(value = Constants.ART_COLLEGE_DOWNLOAD, method = RequestMethod.GET)
 	public String findUntestedDorm(HttpServletRequest request, HttpServletResponse response, String conferenceID) throws IOException {
 		if(conferenceID == null || conferenceID.equals("")) {
 			return "must include conferenceID in your url";
@@ -65,5 +62,5 @@ public class GeneralAttenderController {
 	    os.flush();
 	    os.close();
 	    return "hi";
-	}
+	}    
 }

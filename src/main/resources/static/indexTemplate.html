@@ -33,7 +33,7 @@
 
 
         function queryNum() {
-            httpRequest.open('GET', '/gadgets/generalNumOfSignIns?conferenceID={conferenceID}', true)
+            httpRequest.open('GET', '/gadgets/{queryNumberOfSignInsUrl}?conferenceID={conferenceID}', true)
             httpRequest.send()
             httpRequest.onreadystatechange = function () {
                 if (httpRequest.readyState == 4 && httpRequest.status == 200) {
@@ -47,11 +47,11 @@
 </head>
 
 <body>
-    <a href='/gadgets/download?conferenceID={conferenceID}' >点此链接下载签到情况</a>
+    <a href='/gadgets/{downloadUrl}?conferenceID={conferenceID}' >点此链接下载签到情况</a>
     <h1>{conferenceID}</h1>
     <h1>签到二维码：</h1>
     <div>
-        <img src="/gadgets/generalQRCode" />
+        <img src="/gadgets/image?imageFileName={imageFileName}" />
     </div>
     <h1>已签到人数：<a id='num'>0</a> </h1>
 </body>
